@@ -3,17 +3,17 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-const char* ssid = "your ssid";
-const char* password = "your wifi password";
+const char* ssid = "...";
+const char* password = "...";
 
 ESP8266WebServer server(80);
 
 const int led = 13;
-const int onPin = 16;
+const int onPin = 2;
 
 void handleRoot() {
   digitalWrite(led, 1);
-  server.send(200, "text/plain", "hello from esp8266!");
+  server.send(200, "text/plain", "The route path won't really help you here. Try '/toggle-coffee'");
   digitalWrite(led, 0);
 }
 
@@ -36,6 +36,7 @@ void handleNotFound(){
 
 void setup(void){
   pinMode(led, OUTPUT);
+  pinMode(onPin, OUTPUT);
   digitalWrite(led, 0);
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
@@ -61,7 +62,7 @@ void setup(void){
   
    server.on("/toggle-coffee", [](){
     digitalWrite(onPin, HIGH);
-    delay(400);
+    delay(100);
     digitalWrite(onPin, LOW);
     server.send(200, "text/plain", "Coffee is brewing!");
   });
